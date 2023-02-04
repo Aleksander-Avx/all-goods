@@ -38,7 +38,6 @@ public class ProductEntity {
     private String author;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productEntity")
-    @JoinColumn()
     private List<ImageEntity> images = new ArrayList<>();
 
     private Long previewImageId;
