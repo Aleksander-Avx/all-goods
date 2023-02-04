@@ -50,4 +50,8 @@ public class ProductEntity {
         dateOfCreated = LocalDateTime.now();
     }
 
+    public void addImageToProduct(ImageEntity image) {
+        image.setProductEntity(this);
+    }
+
 }
