@@ -1,7 +1,7 @@
 package com.avx.allgoods.controller;
 
 import com.avx.allgoods.entity.ImageEntity;
-import com.avx.allgoods.repository.ImageRepository;
+import com.avx.allgoods.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -16,11 +16,11 @@ import java.io.ByteArrayInputStream;
 @RequiredArgsConstructor
 public class ImageController {
 
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     @GetMapping("/images/{id}")
     private ResponseEntity<?> getImageById(@PathVariable Long id) {
-        ImageEntity image = imageRepository.findById(id).orElse(null);
+        ImageEntity image = imageService.findByIdImage(id);
         return ResponseEntity.ok()
                 .header("fileName", image.getOriginalFileName())
                 .contentType(MediaType.valueOf(image.getContentType()))
