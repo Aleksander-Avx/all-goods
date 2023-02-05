@@ -17,6 +17,7 @@
     <#else>
     <h3>Товаров нет</h3>
 </#list>
+<hr>
 <h3>Создать новый товар</h3>
 <form action="/product/create" method="post" enctype="multipart/form-data">
     Название объявления: <input type="text" name="title"><br><br>

@@ -51,6 +51,7 @@ public class ProductEntity {
 
     public void addImageToProduct(ImageEntity image) {
         image.setProductEntity(this);
+        images.add(image);
     }
 
 }

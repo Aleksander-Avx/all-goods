@@ -5,16 +5,16 @@ import com.avx.allgoods.entity.ProductEntity;
 import com.avx.allgoods.mapper.ImageMapper;
 import com.avx.allgoods.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
-
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ImageMapper imageMapper;
@@ -47,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
             image3 = imageMapper.toImageEntity(file3);
             productEntity.addImageToProduct(image3);
         }
+        log.info("Saving new Product. Title: {}; Author: {}", productEntity.getTitle(), productEntity.getAuthor());
         ProductEntity productFromDb = productRepository.save(productEntity);
         productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
         productRepository.save(productEntity);
@@ -55,4 +56,5 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
 }
