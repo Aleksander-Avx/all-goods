@@ -4,23 +4,63 @@ import com.avx.allgoods.entity.UserEntity;
 import com.avx.allgoods.entity.enums.Role;
 import com.avx.allgoods.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
 
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public boolean createUser(UserEntity userEntity) {
-        String email = userEntity.getEmail();
-        if(userRepository.findByEmail(email) != null) return false;
-        userEntity.setActive(true);
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        userEntity.getRoles().add(Role.ROLE_USER);
-        userRepository.save(userEntity);
+    public boolean createUser(UserEntity user) {
+        String email = user.getEmail();
+        if (userRepository.findByEmail(email) != null) return false;
+        user.setActive(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getRoles().add(Role.ROLE_USER);
+        log.info("Saving new User with email: {}", email);
+        userRepository.save(user);
         return true;
+    }
+
+    public List<UserEntity> list() {
+        return userRepository.findAll();
+    }
+
+    public void banUser(Long id) {
+        UserEntity user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            if (user.isActive()) {
+                user.setActive(false);
+                log.info("Ban user with id = {}; email: {}", user.getId(), user.getEmail());
+            } else {
+                user.setActive(true);
+                log.info("Unban user with id = {}; email: {}", user.getId(), user.getEmail());
+            }
+        }
+        userRepository.save(user);
+    }
+
+    public void changeUserRoles(UserEntity user, Map<String, String> form) {
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+        user.getRoles().clear();
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+        userRepository.save(user);
     }
 }
