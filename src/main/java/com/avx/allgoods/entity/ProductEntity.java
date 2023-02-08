@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class ProductEntity {
     private LocalDateTime dateOfCreated;
 
     @PrePersist
-    private void init() {
+    private void onCreate() {
         dateOfCreated = LocalDateTime.now();
     }
 

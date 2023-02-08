@@ -1,6 +1,5 @@
 package com.avx.allgoods.security.details;
 
-import com.avx.allgoods.entity.UserEntity;
 import com.avx.allgoods.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
