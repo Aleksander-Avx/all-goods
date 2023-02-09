@@ -58,19 +58,20 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(productEntity);
     }
 
-    public void deleteProduct(UserEntity user, Long id) {
-        ProductEntity product = productRepository.findById(id)
-                .orElse(null);
-        if (product != null) {
-            if (product.getUser().getId().equals(user.getId())) {
-                productRepository.delete(product);
-                log.info("Product with id = {} was deleted", id);
-            } else {
-                log.error("User: {} haven't this product with id = {}", user.getEmail(), id);
-            }
-        } else {
-            log.error("Product with id = {} is not found", id);
-        }
+    public void deleteProduct( Long id) {
+        productRepository.deleteById(id);
+//        ProductEntity product = productRepository.findById(id)
+//                .orElse(null);
+//        if (product != null) {
+//            if (product.getUser().getId().equals(user.getId())) {
+//                productRepository.deleteById(id);
+//                log.info("Product with id = {} was deleted", id);
+//            } else {
+//                log.error("User: {} haven't this product with id = {}", user.getEmail(), id);
+//            }
+//        } else {
+//            log.error("Product with id = {} is not found", id);
+//        }
     }
     public UserEntity getUserByPrincipal(Principal principal) {
         if (principal == null) return new UserEntity();

@@ -7,3 +7,14 @@
     color: #000 !important;
     text-decoration: none
 }
+
+
+.my-image{
+    height : 200px !important;
+    width: 80% !important
+}
+
+.row {
+    justify-content: center;
+    align-items: center;
+}
